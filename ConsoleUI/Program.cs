@@ -13,24 +13,51 @@ namespace ConsoleUI
         {
             ProductManager productManager = new ProductManager(new EfProductDal());
 
-            foreach (Product product in productManager.GetAll())
+            //GetAll(productManager);
+            //GetByCatId(productManager);
+            //GetByUnitPrice(productManager);
+            // CategoryTest();
+
+            foreach (var item in productManager.GetProductDetails())
+            {
+                Console.WriteLine($"{item.ProductName} Category {item.CategoryName}");
+            }
+        }
+
+        private static void CategoryTest()
+        {
+            CategoryManager categoryManager = new CategoryManager(new EfCategoryDal());
+            foreach (Category item in categoryManager.GetAll())
+            {
+                Console.WriteLine(item.CategoryName);
+            }
+        }
+
+        private static void GetByUnitPrice(ProductManager productManager)
+        {
+            foreach (Product product in productManager.GetByUnitPrice(50, 100))
             {
                 Console.WriteLine(product.ProductName);
             }
-            Console.WriteLine("--------------------------------------------------");
+        }
 
+        private static void GetByCatId(ProductManager productManager)
+        {
             foreach (Product product in productManager.GetAllByCategoryId(2))
             {
                 Console.WriteLine(product.ProductName);
             }
 
             Console.WriteLine("--------------------------------------------------");
+        }
 
-            foreach (Product product in productManager.GetByUnitPrice(50,100))
+        private static void GetAll(ProductManager productManager)
+        {
+            foreach (Product product in productManager.GetAll())
             {
                 Console.WriteLine(product.ProductName);
             }
-
+            Console.WriteLine("--------------------------------------------------");
         }
     }
 }
