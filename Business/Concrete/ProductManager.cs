@@ -35,31 +35,31 @@ namespace Business.Concrete
             // iş kodları => iş kodlarından geçiyorsa, benim veri erişimi çağrımam gerek. bu safha da dependency injection olaya giriyor.
 
             if (DateTime.Now.Hour ==22) // 22 de sistemi kapamak istiyoruz. ürün list istemiyoz
-            { 
+            {
                 // boş ürün döndürmece
-                return new ErrorDataResult();
+                return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);
             }
-            return new SuccessDataResult<List<Product>>(_productDal.GetAll(),true,"asdasdasdasd");
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(),Messages.ProductListed);
         }
 
         public IDataResult<List<Product>> GetAllByCategoryId(int id)
         {
-            return new DataResult (_productDal.GetAll(p => p.CategoryId == id));
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryId == id));
         }
 
         public IDataResult<Product> GetByID(int productId)
         {
-            return new DataResult(_productDal.Get(p=> p.ProductId == productId));
+            return new SuccessDataResult<Product>(_productDal.Get(p=> p.ProductId == productId));
         }
 
         public IDataResult<List<Product>> GetByUnitPrice(decimal min, decimal max)
         {
-            return new DataResult (_productDal.GetAll(p => p.UnitPrice >= min && p.UnitPrice <= max));
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.UnitPrice >= min && p.UnitPrice <= max));
         }
 
         public IDataResult<List<ProductDetailDto>> GetProductDetails()
         {
-            return new DataResult( _productDal.GetProductDetails());
+            return new SuccessDataResult<List<ProductDetailDto>>( _productDal.GetProductDetails());
         }
     }
 }

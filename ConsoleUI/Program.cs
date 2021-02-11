@@ -18,10 +18,20 @@ namespace ConsoleUI
             //GetByUnitPrice(productManager);
             // CategoryTest();
 
-            foreach (var item in productManager.GetProductDetails())
+            var result = productManager.GetProductDetails();
+            if (result.Success ==true)
             {
-                Console.WriteLine($"{item.ProductName} Category {item.CategoryName}");
+                foreach (var item in result.Data)
+                {
+                    Console.WriteLine($"{item.ProductName} Category {item.CategoryName}");
+                }
             }
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
+
+       
         }
 
         private static void CategoryTest()
@@ -35,7 +45,7 @@ namespace ConsoleUI
 
         private static void GetByUnitPrice(ProductManager productManager)
         {
-            foreach (Product product in productManager.GetByUnitPrice(50, 100))
+            foreach (Product product in productManager.GetByUnitPrice(50, 100).Data)
             {
                 Console.WriteLine(product.ProductName);
             }
@@ -43,7 +53,7 @@ namespace ConsoleUI
 
         private static void GetByCatId(ProductManager productManager)
         {
-            foreach (Product product in productManager.GetAllByCategoryId(2))
+            foreach (Product product in productManager.GetAllByCategoryId(2).Data)
             {
                 Console.WriteLine(product.ProductName);
             }
@@ -53,7 +63,7 @@ namespace ConsoleUI
 
         private static void GetAll(ProductManager productManager)
         {
-            foreach (Product product in productManager.GetAll())
+            foreach (Product product in productManager.GetAll().Data)
             {
                 Console.WriteLine(product.ProductName);
             }
