@@ -59,7 +59,16 @@ namespace Business.Concrete
 
         public IDataResult<List<ProductDetailDto>> GetProductDetails()
         {
+
+            if (DateTime.Now.Hour == 22) // 22 de sistemi kapamak istiyoruz. ürün list istemiyoz
+            {
+                // boş ürün döndürmece
+                return new ErrorDataResult<List<ProductDetailDto>>(Messages.MaintenanceTime);
+            }
+            else
+            {
             return new SuccessDataResult<List<ProductDetailDto>>( _productDal.GetProductDetails());
+            }
         }
     }
 }
