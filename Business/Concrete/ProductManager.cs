@@ -1,9 +1,12 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.CorssCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,11 +25,33 @@ namespace Business.Concrete
 
         public IResult Add(Product product)
         {
-            if (product.ProductName.Length<2)
-            {
-                return new ErrorResult(Messages.ProductNameInvalid);
-            }
+            // business code : ehliyet örneği. ilk yardmdan 70 almış mı motordan 70 almış mı vs. gibi kurallar gibi
+            // validation : ismin uzunluğu vs. tarzı şeyler... klasik :)
+
+            #region Old style
+            //if (product.UnitPrice<= 0)
+            //{
+            //    return new ErrorResult(Messages.UnitPriceInvalid); // bunlar validasyon kuralları aslında. Fluent validation is coming:)
+            //}
+            //if (product.ProductName.Length<2)
+            //{
+            //    return new ErrorResult(Messages.ProductNameInvalid);
+            //}
+            #endregion
+            #region bütün projelerimde kullancağım bir tool haline getirmek için core katmanına geçiyoruz:) Bir kez yazıp/geçiceğiz
+            //var context = new ValidationContext<Product>(product); // => product için doğrulama yapcam diyorum.
+            //ProductValidator productValidator = new ProductValidator();
+            //var result = productValidator.Validate(context);
+            //if (!result.IsValid)
+            //{
+            //    throw new ValidationException(result.Errors);
+            //}
+            #endregion
+
+            ValidationTool.Validate(new ProductValidator(), product);// değişen iki şey bu. diğerleri aynı kalıyor.
+
             _productDal.Add(product);
+
             return new SuccessResult(Messages.ProductAdded);
         }
 

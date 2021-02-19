@@ -44,7 +44,7 @@ namespace WebAPI.Controllers
         // çözümlemek, interface'e bağlı olan sınıfı newlemek demek.
 
        [HttpPost]
-       public IActionResult Post(Product product)
+       public IActionResult Add(Product product)
         {
             IResult result = _productService.Add(product);
             if (result.Success)
