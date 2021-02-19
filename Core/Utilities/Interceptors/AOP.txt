@@ -1,0 +1,5 @@
+﻿AOP nedir? => aspect oriented programming
+mesela, metotlarınızı loglamak istiyorsunuz. bir metot başında, sonunda ve hata verdiğinde loglanır. sizin, metodun başında--sonund - hata verdiğinde
+çalışmasını istediğiniz kodlarınız var ise; onları aop yöntemi ile dizayn edebiliriz. Dolayısıyla, uygulamalarda her yerde try-catch blogları
+koymaktan kurtuluruz. ve her yerde log log log demek zorunda kalmayız. Bu yönteme, interception denir. kelime anlamı araya girmek demek.
+metodun başı sonu, belli bir kesminde fln.

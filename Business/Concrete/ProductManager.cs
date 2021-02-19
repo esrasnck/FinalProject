@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.CorssCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -22,6 +23,9 @@ namespace Business.Concrete
         {
             _productDal = productDal;
         }
+
+
+        [ValidationAspect(typeof(ProductValidator))] // add metodunu product validator'ı kurallara göre doğrula
 
         public IResult Add(Product product)
         {
@@ -47,8 +51,9 @@ namespace Business.Concrete
             //    throw new ValidationException(result.Errors);
             //}
             #endregion
-
-            ValidationTool.Validate(new ProductValidator(), product);// değişen iki şey bu. diğerleri aynı kalıyor.
+            #region
+            // attribute dan ötürü gidecek :) ValidationTool.Validate(new ProductValidator(), product);// değişen iki şey bu. diğerleri aynı kalıyor.
+            #endregion
 
             _productDal.Add(product);
 

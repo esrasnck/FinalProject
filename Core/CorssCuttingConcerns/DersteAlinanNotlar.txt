@@ -1,1 +1,9 @@
-﻿1 saat 43. dk dan itibaren izle !!!
+﻿Cross cutting concerns :(uygulamayı dikine kesen ilgi alanları gibi) her katman için kullanılan. 
+örneğin
+Loglama => arayüz log'u, iş logu vs. 
+cahce
+transaction yönetimi=> performans yönetimi
+Authorization => yetkilendirme 
+
+bazı birleşenler her yerde kullanıldığı için core da olacak. farklı katmanlarda farklı versiyonlarını kullanabiliyoruz.
+bunlara cross cutting concerns deniyor

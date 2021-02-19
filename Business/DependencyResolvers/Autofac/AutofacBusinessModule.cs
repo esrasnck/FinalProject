@@ -1,6 +1,9 @@
 ﻿using Autofac;
+using Autofac.Extras.DynamicProxy;
 using Business.Abstract;
 using Business.Concrete;
+using Castle.DynamicProxy;
+using Core.Utilities.Interceptors;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using System;
@@ -26,6 +29,18 @@ namespace Business.DependencyResolvers.Autofac
 
             builder.RegisterType<CustomerManager>().As<ICustomerService>().SingleInstance();
             builder.RegisterType<EFCustomerDal>().As<ICustomerDal>().SingleInstance();
+
+
+            // bütün sınıflar için önce bu çalışıyor(aşağıdaki)
+
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly(); // çalışan uygulama içinde
+
+            builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces() // implemente edilmiş interfaceleri bul
+                .EnableInterfaceInterceptors(new ProxyGenerationOptions()
+                {
+                    Selector = new AspectInterceptorSelector() // onlar için bunu çağır diyor
+                }).SingleInstance();
+
         }
 
 
