@@ -9,6 +9,7 @@ using DataAccess.Concrete.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Business.CCS;
 
 namespace Business.DependencyResolvers.Autofac
 {
@@ -20,7 +21,7 @@ namespace Business.DependencyResolvers.Autofac
             // biri senden IProductService isterse,  sen ona ProductManageri newleyip ver demek.
             builder.RegisterType<ProductManager>().As<IProductService>().SingleInstance();
             builder.RegisterType<EfProductDal>().As<IProductDal>().SingleInstance();
-
+            
             builder.RegisterType<CategoryManager>().As<ICategoryService>().SingleInstance();
             builder.RegisterType<EfCategoryDal>().As<ICategoryDal>().SingleInstance();
 
@@ -29,6 +30,8 @@ namespace Business.DependencyResolvers.Autofac
 
             builder.RegisterType<CustomerManager>().As<ICustomerService>().SingleInstance();
             builder.RegisterType<EFCustomerDal>().As<ICustomerDal>().SingleInstance();
+
+       //     builder.RegisterType<FileLogger>().As<ILogger>().SingleInstance(); //=> bu mevzuyu reflection ile yapıyor.
 
 
             // bütün sınıflar için önce bu çalışıyor(aşağıdaki)
@@ -42,8 +45,6 @@ namespace Business.DependencyResolvers.Autofac
                 }).SingleInstance();
 
         }
-
-
 
     }
 }

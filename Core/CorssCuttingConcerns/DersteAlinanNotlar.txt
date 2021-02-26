@@ -6,4 +6,4 @@ transaction yönetimi=> performans yönetimi
 Authorization => yetkilendirme 
 
 bazı birleşenler her yerde kullanıldığı için core da olacak. farklı katmanlarda farklı versiyonlarını kullanabiliyoruz.
-bunlara cross cutting concerns deniyor
+bunlara cross cutting concerns deniyor.

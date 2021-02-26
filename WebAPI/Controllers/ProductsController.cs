@@ -24,9 +24,9 @@ namespace WebAPI.Controllers
         }
 
         // Bazı projelerde managerlar çoğul hale gelebilir. hiç bir zaman bir katman diğer katmanın somutunu interface olmayanlar dışında bağlantı kuramazsın. 
-
-
+      
         [HttpGet]
+
         public IActionResult GetAll()
         {
             // dependency chain (bağımlılık zinciri. Iproduct servce productmanager' o da ProductDal'a bağımlı. bu bağımlılığın çözülmesi için constructor injection yapılması gerek
@@ -64,5 +64,6 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result.Message);
         }
+
     }
 }

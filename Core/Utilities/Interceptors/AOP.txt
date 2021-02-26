@@ -3,3 +3,11 @@ mesela, metotlarınızı loglamak istiyorsunuz. bir metot başında, sonunda ve 
 çalışmasını istediğiniz kodlarınız var ise; onları aop yöntemi ile dizayn edebiliriz. Dolayısıyla, uygulamalarda her yerde try-catch blogları
 koymaktan kurtuluruz. ve her yerde log log log demek zorunda kalmayız. Bu yönteme, interception denir. kelime anlamı araya girmek demek.
 metodun başı sonu, belli bir kesminde fln.
+
+İnterceptor ne demek? Araya girmek demek. metodun başında, sonunda, hata verdiğinde çalışmak gibi çalışmalar demek.
+
+Aspect yazdığımız zaman, o aspect'in nerede çalışmasını istiyorsak, gidip onun metotlarını eziyoruz. 
+
+Aspect demek , bu metot intercaptionu temel alan ve hangisi çalışsın istiyorsan, onu içeren operasyon.
+
+DEfensive coding: savunma odakli kodlama.

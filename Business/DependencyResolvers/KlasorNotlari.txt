@@ -2,3 +2,5 @@
 
 Autofac'den vaz geçmek istersen, yapılacak hareket, dependency resolver 'a gelip, yeni sistemini kurup, program cs'de konfigurasyonu vermek
 yapılacak birşey kalmıyor.
+
+Attribute: bir metoda anlam katmaya Çalıştığınız yapılardır.
