@@ -14,6 +14,7 @@ using System.Text;
 using Business.CCS;
 using System.Linq;
 using Core.Utilities.Business;
+using Business.BusinessAspects.Autofac;
 
 namespace Business.Concrete
 {
@@ -74,6 +75,11 @@ namespace Business.Concrete
             }
         }
 
+        // her projenin yetkilendirme aspectleri değişebileceği için bussiness'a bunu yazcaz.
+
+        [SecuredOperation("admin,editör,product.add")] // yetkilendirme. bazen de operasyon bazında yetkilendirme yaparız. mesela product.add gibi
+        // biz bu yetkilere claim diyoruz. 
+        // claim: iddia etmek. yetkilendirmek. bu kullanıcı, parantez içindeki yetkilerden birine sahip olmalı demek.
 
         [ValidationAspect(typeof(ProductValidator))] // add metodunu product validator'ı kurallara göre doğrula
 
@@ -164,7 +170,7 @@ namespace Business.Concrete
             // getAll demek : select (*) from where categoryId=1 demek gibi.
             int result = _productDal.GetAll(c => c.CategoryId == categoryId).Count;
 
-            if (result >= 0)
+            if (result >= 20)
             {
                 return new ErrorResult(Messages.ProductCountOfCategoryError);
                

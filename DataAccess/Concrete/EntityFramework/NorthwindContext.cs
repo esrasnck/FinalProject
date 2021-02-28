@@ -5,25 +5,31 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Core.Entities.Concrete;
 
 namespace DataAccess.Concrete.EntityFramework
 {
     public class NorthwindContext : DbContext
     {
         private readonly IConfiguration _configuration;
-        public NorthwindContext()
-        {
-            _configuration = (IConfiguration)ServiceTool.ServiceProvider.GetService(typeof(IConfiguration));
-        }
+        //public NorthwindContext()
+        //{
+        //    _configuration = (IConfiguration)ServiceTool.ServiceProvider.GetService(typeof(IConfiguration));
+        //}
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Northwind;Trusted_Connection=true");
-            optionsBuilder.UseSqlServer(_configuration.GetConnectionString("Default"));
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Northwind;Trusted_Connection=true");
+            //optionsBuilder.UseSqlServer(_configuration.GetConnectionString("Default"));
         }
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Order> Orders { get; set; }
+
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<OperationClaim> OperationClaims { get; set; }
+        public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
     }
 }

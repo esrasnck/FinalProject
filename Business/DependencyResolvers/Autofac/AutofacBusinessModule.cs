@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Business.CCS;
+using Core.Utilities.Security.JWT;
+using Microsoft.AspNetCore.Http;
 
 namespace Business.DependencyResolvers.Autofac
 {
@@ -31,7 +33,15 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<CustomerManager>().As<ICustomerService>().SingleInstance();
             builder.RegisterType<EFCustomerDal>().As<ICustomerDal>().SingleInstance();
 
-       //     builder.RegisterType<FileLogger>().As<ILogger>().SingleInstance(); //=> bu mevzuyu reflection ile yapıyor.
+            builder.RegisterType<UserManager>().As<IUserService>();
+            builder.RegisterType<EfUserDal>().As<IUserDal>();
+
+            builder.RegisterType<AuthManager>().As<IAuthService>();
+            builder.RegisterType<JwtHelper>().As<ITokenHelper>();
+
+           // builder.RegisterType<HttpContextAccessor>().As<IHttpContextAccessor>();
+
+            //     builder.RegisterType<FileLogger>().As<ILogger>().SingleInstance(); //=> bu mevzuyu reflection ile yapıyor.
 
 
             // bütün sınıflar için önce bu çalışıyor(aşağıdaki)
