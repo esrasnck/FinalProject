@@ -25,7 +25,7 @@ namespace WebAPI.Controllers
 
         // Bazı projelerde managerlar çoğul hale gelebilir. hiç bir zaman bir katman diğer katmanın somutunu interface olmayanlar dışında bağlantı kuramazsın. 
       
-        [HttpGet()]
+        [HttpGet]
 
         public IActionResult GetAll()
         {

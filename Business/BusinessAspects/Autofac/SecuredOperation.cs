@@ -34,7 +34,7 @@ namespace Business.BusinessAspects.Autofac
             {
                 if (roleClaims.Contains(role)) // bana gönderdiğin role varsa
                 {
-                    return; // metoda devam et
+                    return; // metoda devam et(manager'a attribute olarak verdiğim metota devam et)
                 }
             }
             throw new Exception(Messages.AuthorizationDenied); // ama yoksa yetkin yok hatası ver diyor.
