@@ -17,27 +17,30 @@ namespace Core.Aspects.Autofac.Caching
         int _duration;
         ICacheManager _cacheManager;
 
-        public CacheAspect(int duration=60) // => değer girmezse default 60 dk
+        public CacheAspect(int duration=60) // => değer girmezse default 60 dk => süre vermezsek, 60 dk diyoruz. 
         {
             _duration = duration;
-            _cacheManager = ServiceTool.ServiceProvider.GetService<ICacheManager>();
+            _cacheManager = ServiceTool.ServiceProvider.GetService<ICacheManager>(); // aspect olduğu için injection yapamıyoruz. eğer farklı bir sistem kullanırsak, buraya dokunmuyoruz. mesela Redis'e geçmek istediğimiz zaman, yapılacak tek şey redis klasörünü oluşturmak. Core module'e gidip onu vermek. başka birşey yapmıyoruz.
         }
 
-        public override void Intercept(IInvocation invocation)
+        // key oluşturcam mesela. ilk olarak, metodun ismini bulmaya çalışıyorum.
+        public override void Intercept(IInvocation invocation) // life cycle'ı harekete geçir dedik. ezdiık. invocation metot. getall çalışmadan bu kodları çalıştıryoruz.
         {
+            // örnek: key oluştururken. mesela getall. reflectedType demek, name spacesini + managerı al demek. sonra nokta yok. metotun adını al.
             var methodName = string.Format($"{invocation.Method.ReflectedType.FullName}.{invocation.Method.Name}"); // class ve metodun ismini vermek için. key değeri başlangıcı
-            var arguments = invocation.Arguments.ToList(); //=> arguman listem
+            var arguments = invocation.Arguments.ToList(); //=> arguman listem varsa metodun parametrelerini listeye çevir
 
-            var key = $"{methodName}({string.Join(",",arguments.Select(x => x?.ToString() ?? "<Null>"))})";
-            if (_cacheManager.IsAdd(key))
+            var key = $"{methodName}({string.Join(",",arguments.Select(x => x?.ToString() ?? "<Null>"))})"; // metodun parametre değeri varsa, o parametre değeri tek tek metodun içine ekle demek
+            if (_cacheManager.IsAdd(key)) // böyle bir key oluşturduk. diyorum ki git bak. bellekte böyle bir metot var mı?
             {
                 // eğer bu varsa, bu metodu çalıştırma
-                invocation.ReturnValue = _cacheManager.Get(key);
+                invocation.ReturnValue = _cacheManager.Get(key); // metodu çalıştırmadna geri dön demek
+                // veritabanından gitmesin de onun değeri cache deki data olsun demek : returnValue
                 return;
             }
             // yoksa
 
-            invocation.Proceed();
+            invocation.Proceed(); // metod çalıştı
             _cacheManager.Add(key, invocation.ReturnValue, _duration); //=> son çalışan metodu alıp cache ekle diyoruz.
         }
     }

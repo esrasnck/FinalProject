@@ -170,6 +170,7 @@ namespace Business.Concrete
 
 
         [ValidationAspect(typeof(ProductValidator))]
+        [CacheRemoveAspect("IProductService.Get")] // bellekteki içerisinde get olan tüm keyleri iptal et demek.
         public IResult Update(Product product)
         {
             if (CheckIfProductCountOfCategoryCorrect(product.CategoryId).Success )

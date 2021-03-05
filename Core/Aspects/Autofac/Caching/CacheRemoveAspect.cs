@@ -15,10 +15,11 @@ namespace Core.Aspects.Autofac.Caching
         ICacheManager _cacheManager;
         public CacheRemoveAspect(string pattern)
         {
+
             _pattern = pattern;
             _cacheManager = ServiceTool.ServiceProvider.GetService<ICacheManager>();
         }
-
+        // data bozulduğu zaman kullanılır. veriyi manupile eden metotlarına uygularsın.
         protected override void OnSuccess(IInvocation invocation) //=> ürün eklenme, güncelleme, silme operasyonlarında çalıştırmamızda fayda var. çünkü yeni ürün eklendi. cache'in temizlenmesi gerekiyor..
         {
             _cacheManager.RemoveByPattern(_pattern);
