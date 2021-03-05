@@ -1,5 +1,7 @@
 using Business.Abstract;
 using Business.Concrete;
+using Core.DependencyResolvers;
+using Core.Extensions;
 using Core.Utilities.IoC;
 using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.JWT;
@@ -36,7 +38,7 @@ namespace WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); /// todo: bu kısım yanlış sanırım.
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); ///=> her yapılan istek ile ilgili oluşan context. isteğin başlangıcından bitişine kadar(requesten response'a kadar) olan işlemin takibini bu vatandaş yapıyor. Bu injection noktasında devreye giremediği için, servicetool'u kullandık. => bunu farklı projelerd de kullanacağmız için core'a Ioc'ye aldık.
 
             #region IProduct service gibi bir bağımlılı gösterirse, arka planda bana productmanager'ı newle demek. Bu mevzu kendi alt yapısı
             //services.AddSingleton<IProductService, ProductManager>();
@@ -61,7 +63,17 @@ namespace WebAPI
                         IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
                     };
                 });
-            ServiceTool.Create(services);
+
+            // sadece core modulü değil, başka modülleri de buraya eklemek için böyle birşey yapıyorum.
+            // gelmediği için Iservice interface'ini extend ediyoruz.
+            services.AddDependencyResolvers(new ICoreModule[]   // using Core.Extensions
+            {
+                // burada bir sürü modül oluşturup/ ekleyebiliriz. httpContext'i buraya ekledik gibi.
+                new CoreModule(),
+            });
+
+
+            //ServiceTool.Create(services); => dependency resolution ile ilgili servisler devreye girmiyor. ben servicetool'u kullanarak bunu haber verdim. servislerin, autofac'in haberdar olacağı noktaya çekmiş oldum
 
         }
 

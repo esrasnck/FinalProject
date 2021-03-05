@@ -17,5 +17,9 @@ namespace Business.Abstract
         IResult Add(Product product);
         IResult Update(Product product);
         IDataResult<Product> GetByID(int productId);
+
+
+        // 
+        IResult TransactionalOperation(Product product); // satış yap. içinde logic'in olduğu operasyon gibi
     }
 }

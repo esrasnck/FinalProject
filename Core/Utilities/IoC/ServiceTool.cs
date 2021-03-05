@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Core.Utilities.IoC
 {
-   public static class ServiceTool
+   public static class ServiceTool // sistemin servislerini merkezi noktadan kontrol ediyor olacaz. Aynı zamanda bu bir ioc resolver olacak.
     {
         // Ioc= inversion of control. injectionları kontrol edebildiiğimiz yer.
 
@@ -19,6 +19,9 @@ namespace Core.Utilities.IoC
             return services;
         }
 
-        // IServiceCollection : icrosoft.Extensions.DependencyInjection;'dan geliyor.
+        // bu vasıta ile, .netCore'un servislerine erişebiliyorum.
+        
+
+        // IServiceCollection : Microsoft.Extensions.DependencyInjection;'dan geliyor.
     }
 }

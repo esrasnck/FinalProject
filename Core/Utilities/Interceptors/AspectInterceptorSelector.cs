@@ -25,3 +25,5 @@ namespace Core.Utilities.Interceptors
         }
     }
 }
+//Microsoft.IdentityModel.Tokens
+//Microsoft.IdentityModel.Tokens.Jwt

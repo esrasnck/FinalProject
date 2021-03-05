@@ -4,7 +4,8 @@
     {
         public static string ProductAdded = "Ürün Eklendi"; 
         public static string ProductNameInvalid = "Ürün İsmi geçersiz"; 
-        public static string ProductListed = "Ürünler listelendi"; 
+        public static string ProductListed = "Ürünler listelendi";
+        public static string ProductUpdated = "Ürün güncellendi";
         public static string MaintenanceTime = "Sistem bakımda";
         public static string UnitPriceInvalid = "Ürün Fiyatı geçersiz";
         public static string ProductCountOfCategoryError = "Bir kategoride en fazla 20 ürün olabilir.";

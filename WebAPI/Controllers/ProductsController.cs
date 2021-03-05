@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Core.Extensions;
+using Entities.Dtos;
 
 namespace WebAPI.Controllers
 {
@@ -24,13 +26,16 @@ namespace WebAPI.Controllers
         }
 
         // Bazı projelerde managerlar çoğul hale gelebilir. hiç bir zaman bir katman diğer katmanın somutunu interface olmayanlar dışında bağlantı kuramazsın. 
-      
+
         [HttpGet]
 
         public IActionResult GetAll()
         {
             // dependency chain (bağımlılık zinciri. Iproduct servce productmanager' o da ProductDal'a bağımlı. bu bağımlılığın çözülmesi için constructor injection yapılması gerek
-       
+
+
+            // User.ClaimRoles();  //=> using Core.Extensions; buradan gelecek
+
             IDataResult<List<Product>> result = _productService.GetAll();
             if (result.Success)
             {
@@ -38,13 +43,13 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result.Message);
         }
-        
+
         // naming Convention => isimlendirme standartı.
 
         // çözümlemek, interface'e bağlı olan sınıfı newlemek demek.
 
-       [HttpPost]
-       public IActionResult Add(Product product)
+        [HttpPost]
+        public IActionResult Add(Product product)
         {
             IResult result = _productService.Add(product);
             if (result.Success)
@@ -65,5 +70,38 @@ namespace WebAPI.Controllers
             return BadRequest(result.Message);
         }
 
+        [HttpGet]
+        public IActionResult GetListByCategory(int categoryid)
+        {
+            var result = _productService.GetAllByCategoryId(categoryid);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpPost]
+        public IActionResult TransactionTest(Product product)
+        {
+            IResult result = _productService.TransactionalOperation(product);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet]
+        public IActionResult GetProductDetails()
+        {
+            IDataResult<List<ProductDetailDto>> result = _productService.GetProductDetails();
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+        }
     }
 }
+

@@ -15,6 +15,12 @@ using Business.CCS;
 using System.Linq;
 using Core.Utilities.Business;
 using Business.BusinessAspects.Autofac;
+using Core.Aspects.Transaction;
+using Core.Aspects.Autofac.Caching;
+using Microsoft.AspNetCore.Http;
+using Core.Extensions;
+using Core.Aspects.Autofac.Performance;
+using System.Threading;
 
 namespace Business.Concrete
 {
@@ -28,14 +34,20 @@ namespace Business.Concrete
 
         ICategoryService _categoryService;
 
+       //  IHttpContextAccessor _httpContextAccessor; //=> sistemi web base sisteme bağladım. form bazlı bir sisteme bağlamak istersek, patladık.
+
         public ProductManager(IProductDal productDal,ICategoryService categoryService)
         {
             _productDal = productDal;
             _categoryService = categoryService; // bu helal. haram değil. Mesela sistemin içerisne e-devlet microservisi enjekte etmek istersek, bu şekilde yazacaz.
+         
         }
 
+        [SecuredOperation("admin")]
+        
         public IDataResult<List<Product>> GetAll()
         {
+            
             // iş kodları => iş kodlarından geçiyorsa, benim veri erişimi çağrımam gerek. bu safha da dependency injection olaya giriyor.
 
             if (DateTime.Now.Hour == 22) // 22 de sistemi kapamak istiyoruz. ürün list istemiyoz
@@ -46,6 +58,9 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(), Messages.ProductListed);
         }
 
+        // cachlemek istediğimiz yapıyı key,value pair yapısı ile tutuyoruz. key= cache verilen isim.uniq olsun diye. mesela buradaki cache e parametre olmadığı için business.concrete.productmanager.getall gibi
+        // parametreli metot için mesela business.concrete.productmanager.getbyid(1) gibi farklı parametrelere göre de cache yapabilecek durum oluşturcaz
+        [CacheAspect(duration:10)]
         public IDataResult<List<Product>> GetAllByCategoryId(int id)
         {
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryId == id));
@@ -53,6 +68,7 @@ namespace Business.Concrete
 
         public IDataResult<Product> GetByID(int productId)
         {
+          //  _httpContextAccessor.HttpContext.User.ClaimRoles(); // => bu yapı ile claimrollere erişiyoruz. backend'e taşımış oldu.
             return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductId == productId));
         }
 
@@ -61,9 +77,11 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.UnitPrice >= min && p.UnitPrice <= max));
         }
 
+
+        [PerformanceAspect(5)]
         public IDataResult<List<ProductDetailDto>> GetProductDetails()
         {
-
+           // Thread.Sleep(5000);
             if (DateTime.Now.Hour == 22) // 22 de sistemi kapamak istiyoruz. ürün list istemiyoz
             {
                 // boş ürün döndürmece
@@ -75,6 +93,8 @@ namespace Business.Concrete
             }
         }
 
+       
+
         // her projenin yetkilendirme aspectleri değişebileceği için bussiness'a bunu yazcaz.
 
         [SecuredOperation("admin,editör,product.add")] // yetkilendirme. bazen de operasyon bazında yetkilendirme yaparız. mesela product.add gibi
@@ -82,7 +102,7 @@ namespace Business.Concrete
         // claim: iddia etmek. yetkilendirmek. bu kullanıcı, parantez içindeki yetkilerden birine sahip olmalı demek.
 
         [ValidationAspect(typeof(ProductValidator))] // add metodunu product validator'ı kurallara göre doğrula
-
+        [CacheRemoveAspect("IProductService.Get")]
         public IResult Add(Product product)
         {
             // business code : ehliyet örneği. ilk yardmdan 70 almış mı motordan 70 almış mı vs. gibi kurallar gibi
@@ -198,6 +218,15 @@ namespace Business.Concrete
                 return new ErrorResult(Messages.CategoryLimitExceded);
             }
             return new SuccessResult();
+        }
+
+        [TransactionScopeAspect]
+        public IResult TransactionalOperation(Product product)
+        {
+            // invocation dediğimiz yer aşağıdaki kod.
+            _productDal.Update(product); // amaç bu işlem başarılı olsun.
+            _productDal.Add(product); // bu işlem başarısız oldun dolayısıyla update başarısız olsun,
+            return new SuccessResult(Messages.ProductUpdated);
         }
     }
 }
