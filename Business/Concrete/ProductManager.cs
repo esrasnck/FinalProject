@@ -43,7 +43,7 @@ namespace Business.Concrete
          
         }
 
-        [SecuredOperation("admin")]
+      //  [SecuredOperation("admin")]
         
         public IDataResult<List<Product>> GetAll()
         {

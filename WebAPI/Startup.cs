@@ -40,6 +40,7 @@ namespace WebAPI
             services.AddControllers();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); ///=> her yapılan istek ile ilgili oluşan context. isteğin başlangıcından bitişine kadar(requesten response'a kadar) olan işlemin takibini bu vatandaş yapıyor. Bu injection noktasında devreye giremediği için, servicetool'u kullandık. => bunu farklı projelerd de kullanacağmız için core'a Ioc'ye aldık.
 
+            services.AddCors(); // => Cors injection.
             #region IProduct service gibi bir bağımlılı gösterirse, arka planda bana productmanager'ı newle demek. Bu mevzu kendi alt yapısı
             //services.AddSingleton<IProductService, ProductManager>();
             // services.AddSingleton<IProductDal,EfProductDal>();
@@ -85,6 +86,9 @@ namespace WebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            // cors configuration. buradaki sıra önemli.
+            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyOrigin());
 
             app.UseHttpsRedirection();
 

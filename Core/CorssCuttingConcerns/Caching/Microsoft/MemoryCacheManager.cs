@@ -29,7 +29,7 @@ namespace Core.CorssCuttingConcerns.Caching.Microsoft
         public void Add(string key, object data, int duration)
         {
             //set ile cache e değer ekleyebiliyoruz.
-            _cache.Set(key, data, TimeSpan.FromDays(duration)); // => duration dakika demek
+            _cache.Set(key, data, TimeSpan.FromMinutes(duration)); // => duration dakika demek
         }
 
         public T Get<T>(string key)

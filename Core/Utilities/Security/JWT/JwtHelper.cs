@@ -49,6 +49,9 @@ namespace Core.Utilities.Security.JWT
 
         }
 
+
+     
+
         // token'ı burada oluşturuyoruz. biz bu bilgileri vererek, oluşturuyoruz. JwtSecurityToken; System.IdentityModel.Tokens.Jwt'kütüphanesinden geliyor. jwt'leri oluşturmak, serileştirmek ve doğrulamak için kullanılan yapıdır.
         // signingCredentials; ise Microsoft.IdentityModel.Tokens'dan geliyor.
         public JwtSecurityToken CreateJwtSecurityToken(TokenOptions tokenOptions, User user,

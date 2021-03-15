@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Core.Extensions;
 using Entities.Dtos;
+using System.Threading;
 
 namespace WebAPI.Controllers
 {
@@ -32,16 +33,16 @@ namespace WebAPI.Controllers
         public IActionResult GetAll()
         {
             // dependency chain (bağımlılık zinciri. Iproduct servce productmanager' o da ProductDal'a bağımlı. bu bağımlılığın çözülmesi için constructor injection yapılması gerek
-
+           // Thread.Sleep(1000);
 
             // User.ClaimRoles();  //=> using Core.Extensions; buradan gelecek
 
             IDataResult<List<Product>> result = _productService.GetAll();
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         // naming Convention => isimlendirme standartı.
@@ -71,14 +72,14 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetListByCategory(int categoryid)
+        public IActionResult GetByCategory(int categoryId)
         {
-            var result = _productService.GetAllByCategoryId(categoryid);
+            var result = _productService.GetAllByCategoryId(categoryId);
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         [HttpPost]
