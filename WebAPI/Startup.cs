@@ -87,6 +87,7 @@ namespace WebAPI
                 app.UseDeveloperExceptionPage();
             }
 
+            app.ConfigureCustomExceptionMiddleware();  // bu metot da exception middleware extensiondan geliyor.
             // cors configuration. buradaki sıra önemli.
             app.UseCors(builder => builder.AllowAnyHeader().AllowAnyOrigin());
 

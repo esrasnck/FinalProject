@@ -50,7 +50,7 @@ namespace Business.Concrete
             
             // iş kodları => iş kodlarından geçiyorsa, benim veri erişimi çağrımam gerek. bu safha da dependency injection olaya giriyor.
 
-            if (DateTime.Now.Hour == 22) // 22 de sistemi kapamak istiyoruz. ürün list istemiyoz
+            if (DateTime.Now.Hour == 2) // 22 de sistemi kapamak istiyoruz. ürün list istemiyoz
             {
                 // boş ürün döndürmece
                 return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);
@@ -97,7 +97,7 @@ namespace Business.Concrete
 
         // her projenin yetkilendirme aspectleri değişebileceği için bussiness'a bunu yazcaz.
 
-        [SecuredOperation("admin,editör,product.add")] // yetkilendirme. bazen de operasyon bazında yetkilendirme yaparız. mesela product.add gibi
+      //  [SecuredOperation("admin,editör,product.add")] // yetkilendirme. bazen de operasyon bazında yetkilendirme yaparız. mesela product.add gibi
         // biz bu yetkilere claim diyoruz. 
         // claim: iddia etmek. yetkilendirmek. bu kullanıcı, parantez içindeki yetkilerden birine sahip olmalı demek.
 
@@ -213,7 +213,7 @@ namespace Business.Concrete
         { 
             // product için kategori servisi nasıl yorumlanıyor? o yüzden buraya yazıyorum.
 
-            IDataResult<List<Category>> result = _categoryService.GetAll();
+            var result = _categoryService.GetAll();
             if (result.Data.Count> 15)
             {
                 return new ErrorResult(Messages.CategoryLimitExceded);

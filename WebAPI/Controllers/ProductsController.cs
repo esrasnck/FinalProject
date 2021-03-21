@@ -99,7 +99,7 @@ namespace WebAPI.Controllers
             IDataResult<List<ProductDetailDto>> result = _productService.GetProductDetails();
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
             return BadRequest(result.Message);
         }
