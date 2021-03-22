@@ -59,6 +59,7 @@ namespace Core.Extensions
 
                 return httpContext.Response.WriteAsync(new ValidationErrorDetails
                 {
+                    // bu sadece benim objem. üst taraftaki daha bir çokomelli
                     // doğrulama hatasına göre bir dönüş gerçekleşmiş oldu.
                     StatusCode = 400,
                     Message =message,  // mesajı sistemle ilgili verme!
