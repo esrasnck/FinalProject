@@ -97,7 +97,7 @@ namespace Business.Concrete
 
         // her projenin yetkilendirme aspectleri değişebileceği için bussiness'a bunu yazcaz.
 
-      //  [SecuredOperation("admin,editör,product.add")] // yetkilendirme. bazen de operasyon bazında yetkilendirme yaparız. mesela product.add gibi
+        [SecuredOperation("admin,editor,product.add")] // yetkilendirme. bazen de operasyon bazında yetkilendirme yaparız. mesela product.add gibi
         // biz bu yetkilere claim diyoruz. 
         // claim: iddia etmek. yetkilendirmek. bu kullanıcı, parantez içindeki yetkilerden birine sahip olmalı demek.
 
