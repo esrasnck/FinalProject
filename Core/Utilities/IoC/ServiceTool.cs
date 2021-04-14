@@ -23,5 +23,7 @@ namespace Core.Utilities.IoC
         
 
         // IServiceCollection : Microsoft.Extensions.DependencyInjection;'dan geliyor.
+        
+        // var degisken = (IAuthService)ServiceTool.ServiceProvider.GetService(tpyeof(IAuthService));
     }
 }
